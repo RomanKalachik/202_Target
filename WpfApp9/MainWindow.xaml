@@ -1,0 +1,24 @@
+﻿<Window x:Class="WpfApp9.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp9" xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/charts"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <dxc:ChartControl>
+            <dxc:ChartControl.Diagram>
+                <dxc:XYDiagram2D EnableAxisXNavigation="True" EnableAxisYNavigation="True">
+                    <dxc:XYDiagram2D.Series>
+                        <dxc:PointSeries2D MarkerSize="4" AllowResample="True" x:Name="pointSeries">
+                            <dxc:PointSeries2D.MarkerModel>
+                                <dxc:SquareMarker2DModel></dxc:SquareMarker2DModel>
+                            </dxc:PointSeries2D.MarkerModel>
+                        </dxc:PointSeries2D>
+                    </dxc:XYDiagram2D.Series>
+                </dxc:XYDiagram2D>
+            </dxc:ChartControl.Diagram>
+        </dxc:ChartControl>
+    </Grid>
+</Window>
