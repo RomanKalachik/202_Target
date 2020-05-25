@@ -50,7 +50,7 @@ namespace WpfApp9 {
             {
                 string csv = reader.ReadToEnd();
               var lines =  csv.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
-                int counter = lines.Length;
+                int counter = 250000;
                 foreach(var line in lines)
                 {
                     if (line.Length < 5) continue;
