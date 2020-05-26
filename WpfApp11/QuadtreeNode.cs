@@ -46,10 +46,10 @@ namespace WpfApp11 {
             if (SE == null && hint == QuadtreeNodeTypes.SE)
                 SE = new QuadtreeNode();
         }
-        bool Contains(Tuple<Range, Range> visibleRange, SimpleNode node)
-        {
-            return false;
-        }
+        //bool Contains(Tuple<Range, Range> visibleRange, SimpleNode node)
+        //{
+        //    return false;
+        //}
         public QuadtreeNode Connect(SimpleNode newNode, double zoomLevel)
         {
             QuadtreeNode whereToAdd = null;

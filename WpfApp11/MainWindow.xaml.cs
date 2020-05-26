@@ -75,8 +75,11 @@ namespace WpfApp11 {
             visibleRange = new Tuple<Range, Range>(new Range() { Min = rdx, Max = wx }, new Range() { Min = rdy, Max = wy });
 
             Path path = new Path();
-            path.Stroke = Brushes.Blue;
+            path.Stroke = null;
+            path.Fill = Brushes.Blue;
+
             GeometryGroup gg = new GeometryGroup();
+            gg.FillRule = FillRule.Nonzero;
             startNode.VisitNodes(visibleRange, (node) =>
             {
                     gg.Children.Add(new RectangleGeometry(CalcScreenRect(node)));
