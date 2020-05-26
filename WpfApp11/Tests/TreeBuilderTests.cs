@@ -16,7 +16,7 @@ namespace WpfApp11.Tests {
             data.Add(new DataRow() { Argument = 0, Value = 1, });
             data.Add(new DataRow() { Argument = 1, Value = 1, });
 
-            QuadtreeNode startNode = QuardtreeBuilder.BuildTree(data);
+            QuadtreeNode startNode = QuardtreeBuilder.BuildTree(data, 20);
             Assert.AreEqual(startNode.X, 0.5);
             Assert.AreEqual(startNode.Y, 0.5);
 

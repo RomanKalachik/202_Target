@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 namespace WpfApp11 {
     public class QuardtreeBuilder {
-        public static QuadtreeNode BuildTree(List<DataRow> data)
+        public static QuadtreeNode BuildTree(List<DataRow> data, int zoomLevelsCount = 1)
         {
             QuadtreeNode node = new QuadtreeNode();
             QuadtreeNode startNode = node;
-            for (int zoomLevel = 10; zoomLevel > 1; zoomLevel -= 2)
+            for (int zoomLevel = zoomLevelsCount; zoomLevel >= 1; zoomLevel -= 2)
             {
                 QuadtreeNode newParent = null;
                 int counter = 0;
@@ -19,13 +19,9 @@ namespace WpfApp11 {
                     int maxDepth = QuadtreeNode.MaxIterations;
                     do
                     {
-                        newParent = node.Connect(newNode, zoomLevel / 20.0);
+                        newParent = node.Connect(newNode, zoomLevel / (double)zoomLevelsCount);
                         if (newParent != null)
                             node = newParent;
-                        if (maxDepth < 1)
-                        {
-                            throw new Exception("too large data");
-                        }
                     }
                     while (newParent != null && maxDepth-- > 0);
                     counter++;

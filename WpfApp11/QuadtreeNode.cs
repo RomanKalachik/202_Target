@@ -46,10 +46,6 @@ namespace WpfApp11 {
             if (SE == null && hint == QuadtreeNodeTypes.SE)
                 SE = new QuadtreeNode();
         }
-        //bool Contains(Tuple<Range, Range> visibleRange, SimpleNode node)
-        //{
-        //    return false;
-        //}
         public QuadtreeNode Connect(SimpleNode newNode, double zoomLevel)
         {
             QuadtreeNode whereToAdd = null;
@@ -101,7 +97,7 @@ namespace WpfApp11 {
                     return this;
             }
         }
-        public void VisitNodes(Tuple<Range, Range> visibleRange, Action<SimpleNode> callback)
+        public void VisitNodes(Tuple<Range, Range> visibleRange, double zoomLevel, Action<SimpleNode> callback)
         {
             QuadtreeNode currentNode = this;
             int watchdog = MaxIterations;
@@ -114,6 +110,7 @@ namespace WpfApp11 {
                 {
                     QuadtreeNode node = currentNode.GetChildNode(nodeType);
                     if (node == null || node.IsEmpty) continue;
+                    if (node.ZoomLevel > zoomLevel) continue;
                     if (node == currentNode)
                     {
                         callback(node);
