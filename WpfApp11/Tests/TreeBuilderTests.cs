@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Documents;
 
 namespace WpfApp11.Tests {
     [TestFixture]
@@ -16,7 +17,7 @@ namespace WpfApp11.Tests {
             data.Add(new DataRow() { Argument = 0, Value = 1, });
             data.Add(new DataRow() { Argument = 1, Value = 1, });
 
-            QuadtreeNode startNode = QuardtreeBuilder.BuildTree(data, 20);
+            QuadtreeNode startNode = QuardtreeBuilder.BuildTree(data);
             Assert.AreEqual(startNode.X, 0.5);
             Assert.AreEqual(startNode.Y, 0.5);
 
@@ -39,6 +40,54 @@ namespace WpfApp11.Tests {
             List<DataRow> data = Generator.Generate2();
             QuadtreeNode startNode = QuardtreeBuilder.BuildTree(data);
             var wholeRange = QuardtreeBuilder.GetWholeRange(startNode);
+        }
+        [Test]
+        public void TectBuildTree_ZoomLevels()
+        {
+            List<DataRow> data = new List<DataRow>();
+            double val = 0;
+            for (int i = 0; i < 100; i++) {
+                val += i > 0 ? 1.0 / i : 0;
+                data.Add(new DataRow() { Argument = val, Value = 1 }) ;
+            }
+
+            QuadtreeNode startNode = QuardtreeBuilder.BuildTree(data);
+            var wholeRange = QuardtreeBuilder.GetWholeRange(startNode);
+            Assert.AreEqual(wholeRange.Item1.Min, 0);
+            Assert.Greater(10, wholeRange.Item1.Max);
+
+            Assert.AreEqual(wholeRange.Item2.Min, 1);
+            Assert.AreEqual(wholeRange.Item2.Max, 1);
+
+            int counter = 0;
+            startNode.VisitNodes(wholeRange, 1, node => { counter++; });
+            Assert.AreEqual(100, counter);
+        }
+        [Test]
+        public void TectBuildTree_ZoomLevels_2()
+        {
+            List<DataRow> data = new List<DataRow>();
+            double val = 0;
+            for (int i = 0; i < 100; i++)
+            {
+                val += i > 0 ? 1.0 / i : 0;
+                data.Add(new DataRow() { Argument = val, Value = 1 });
+            }
+
+            QuadtreeNode startNode = QuardtreeBuilder.BuildTree(data, 10);
+            var wholeRange = QuardtreeBuilder.GetWholeRange(startNode);
+
+            int counter = 0;
+            startNode.VisitNodes(wholeRange, 10, node => { counter++; });
+            Assert.AreEqual(1, counter);
+
+            counter = 0;
+            startNode.VisitNodes(wholeRange, 1, node => { counter++; });
+            Assert.AreEqual(100, counter);
+
+            counter = 0;
+            startNode.VisitNodes(wholeRange, 2, node => { counter++; });
+            Assert.AreEqual(3, counter);
         }
         [Test]
         public void TestMin()

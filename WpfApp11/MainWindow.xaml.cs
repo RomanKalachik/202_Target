@@ -16,11 +16,12 @@ namespace WpfApp11 {
         Tuple<Range, Range> visibleRange;
         Tuple<Range, Range> wholeRange;
         double zoomFactor = 1;
+        byte zoomLevelsCount = 20;
         public MainWindow()
         {
             InitializeComponent();
             List<DataRow> data = Generator.Generate2();
-            startNode = QuardtreeBuilder.BuildTree(data, 20);
+            startNode = QuardtreeBuilder.BuildTree(data, zoomLevelsCount);
             wholeRange = QuardtreeBuilder.GetWholeRange(startNode);
             LayoutUpdated += MainWindow_LayoutUpdated;
         }
@@ -79,12 +80,13 @@ namespace WpfApp11 {
 
             GeometryGroup gg = new GeometryGroup();
             gg.FillRule = FillRule.Nonzero;
-            startNode.VisitNodes(visibleRange, zoomFactor, (node) =>
+            byte zoomLevel = (byte)Math.Max(2,(zoomLevelsCount - zoomFactor));
+            startNode.VisitNodes(visibleRange, zoomLevel, (node) =>
             {
                     gg.Children.Add(new RectangleGeometry(CalcScreenRect(node)));
             });
             path.Data = gg;
-            Title = string.Format("Current zoomLevel:{0} , rectangles count = {1}", zoomFactor.ToString(), gg.Children.Count.ToString());
+            Title = string.Format("Current zoomLevel:{0} , rectangles count = {1}", zoomLevel.ToString(), gg.Children.Count.ToString());
             canvas.Children.Clear();
             canvas.Children.Add(path);
         }

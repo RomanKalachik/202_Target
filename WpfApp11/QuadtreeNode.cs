@@ -30,10 +30,13 @@ namespace WpfApp11 {
             }
             return whereToAdd;
         }
-        bool CanSimplify(SimpleNode newNode, double zoomLevel)
+       
+        bool CanSimplify(SimpleNode newNode, int zoomLevel, int zoomLevelsCount)
         {
             if (IsEmpty) return false;
-            return Math.Abs(RefinedX - newNode.RefinedX) < zoomLevel && Math.Abs(RefinedY - newNode.RefinedY) < zoomLevel;
+            double minDistance = (double)zoomLevel /(2 * zoomLevelsCount);
+            if (zoomLevel == 1) return false;
+            return Math.Abs(RefinedX - newNode.RefinedX) < minDistance && Math.Abs(RefinedY - newNode.RefinedY) < minDistance;
         }
         void CheckNodes(QuadtreeNodeTypes hint)
         {
@@ -46,7 +49,7 @@ namespace WpfApp11 {
             if (SE == null && hint == QuadtreeNodeTypes.SE)
                 SE = new QuadtreeNode();
         }
-        public QuadtreeNode Connect(SimpleNode newNode, double zoomLevel)
+        public QuadtreeNode Connect(SimpleNode newNode, byte zoomLevel, int zoomLevelsCount)
         {
             QuadtreeNode whereToAdd = null;
 
@@ -54,7 +57,7 @@ namespace WpfApp11 {
                 whereToAdd = this;
             else
             {
-                if (CanSimplify(newNode, zoomLevel))
+                if (CanSimplify(newNode, zoomLevel, zoomLevelsCount))
                 {
                     whereToAdd = this;
                 }
@@ -110,7 +113,7 @@ namespace WpfApp11 {
                 {
                     QuadtreeNode node = currentNode.GetChildNode(nodeType);
                     if (node == null || node.IsEmpty) continue;
-                    if (node.ZoomLevel > zoomLevel) continue;
+                    if (node.ZoomLevel < zoomLevel) continue;
                     if (node == currentNode)
                     {
                         callback(node);
@@ -135,7 +138,7 @@ namespace WpfApp11 {
         public QuadtreeNode NW { get; set; }
         public QuadtreeNode SE { get; set; }
         public QuadtreeNode SW { get; set; }
-        public double ZoomLevel { get; set; }
+        public byte ZoomLevel { get; set; }
     }
     public enum QuadtreeNodeTypes : byte {
         NW = 0,
